@@ -24,24 +24,40 @@ void des(int N){ //N doit être compris entre 3 et 18
     }
 }
 
-int isParfait(N){
-    int somme_diviseurs = 0;
-    for (int diviseur_potentiel = 1; diviseur_potentiel < N; diviseur_potentiel++) {
-        if (isDiviseur(diviseur_potentiel, N)){
-            somme_diviseurs += diviseur_potentiel;
-        }
-    }
-    if(somme_diviseurs == N) {
-        return 0;
-    }
-    return 1;
-}
+// int isParfait(N){
+//     int somme_diviseurs = 0;
+//     for (int diviseur_potentiel = 1; diviseur_potentiel < N; diviseur_potentiel++) {
+//         if (isDiviseur(diviseur_potentiel, N)){
+//             somme_diviseurs += diviseur_potentiel;
+//         }
+//     }
+//     if(somme_diviseurs == N) {
+//         return 0;
+//     }
+//     return 1;
+// }
 
-int isDiviseur(a,b){
-    if (a%b == 0){
+// int isDiviseur(a,b){
+//     if (a%b == 0){
+//         return 0;
+//     }
+//     else { return 1; }
+// }
+
+typedef short TypeEntier;
+TypeEntier factorielle(TypeEntier entier) {
+    if(entier == 0) {
         return 0;
     }
-    else { return 1; }
+    TypeEntier res = 1, mult =1;
+    
+    while (mult <= entier) {
+        res *= mult;
+        mult += 1;
+    }
+
+    return res;
+
 }
 
 int main(void){
@@ -54,9 +70,17 @@ int main(void){
 
     //des(4);
 
-    int N = 6;
-    int isParfait(N);
+    //int N = 6;
+    //int isParfait(N);
 
+    TypeEntier entier = 3;
+    TypeEntier res = factorielle(entier);
+    printf("La factorielle de %u est %u \n", entier, res);
+
+    for(TypeEntier i = 1; i<=15; i++) {
+        TypeEntier res = factorielle(i);
+        printf("La factorielle de %u est %u \n", i, res);
+    }
 
     return EXIT_SUCCESS;
 }
