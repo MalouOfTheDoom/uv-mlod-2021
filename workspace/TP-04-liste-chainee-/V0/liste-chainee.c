@@ -25,7 +25,6 @@ Liste ajoutTete(Element v, Liste l) {
 	return n;
 }
 
-
 void afficheElement(Element e) {
 	printf("%i ",e);
 }
@@ -59,10 +58,8 @@ void afficheListe_r(Liste l) {
 	else printf("\n");
 }
 
-void detruireElement(Liste p) { //modifié par rapport à l'énoncé : on passe le pointeur vers la cellule à supprimer.
-	if (estVide(p)) return;
-	free(p);
-	p = NULL;
+void detruireElement(Element v) { 
+	TODO;
 }
 
 // Détruit tous les éléments de la liste l
@@ -72,10 +69,10 @@ void detruire_i(Liste l) {
 
 	Liste p = l;
 	while(p->suiv){
-		detruireElement(p);
+		detruireElement(&(p->val));
 		p = p->suiv;
 	}
-	detruireElement(p);
+	detruireElement(&(p->val));
 }
 
 // version récursive
@@ -84,7 +81,7 @@ void detruire_r(Liste l) {
 	if(l->suiv){
 		detruire_r(l->suiv);
 	}
-	detruireElement(l);
+	detruireElement(&(l->val));
 }
 
 // retourne la liste dans laquelle l'élément v a été ajouté en fin

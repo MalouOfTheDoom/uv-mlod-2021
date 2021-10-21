@@ -34,7 +34,7 @@ void afficheListe_i(Liste l);
 // version recursive
 void afficheListe_r(Liste l);
 
-void detruireElement(Liste l); //modifié par rapport à l'énoncé.
+void detruireElement(Element v); 
 
 // Détruit tous les éléments de la liste l
 // version itérative
