@@ -26,8 +26,8 @@ Liste ajoutTete(Music *music, Liste l) {
 }
 
 //affiche une musique.
-void printMusic(Music *music) {
-    printf("%s, %s, %s, %s, %u, %u, %u",
+void afficheMusic(Music *music) {
+    printf("%s, %s, %s, %s, %u, %u, %u \n",
     music->name,
     music->artist,
     music->album,
@@ -44,7 +44,7 @@ void printMusic(Music *music) {
 // version itérative
 void afficheListe_i(Liste l) {
 	Liste p = l;
-
+	
 	while(!estVide(p)) {
 		afficheMusic(p->music);
 		p=p->suiv;

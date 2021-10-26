@@ -1,4 +1,4 @@
-// gcc -W -Wall -std=c99 linkedList.c linkedListOfString.c -o linkedListOfString
+// gcc -W -Wall linkedListOfMusic.c mySpitofy.c -o mySpitofy
 
 // valgrind --leak-check=yes --leak-check=full --show-leak-kinds=all --show-reachable=no ./linkedListOfString
 
@@ -16,7 +16,7 @@ char* scanLine(FILE *f)
 	char *line = calloc(maxLineSize+1,sizeof(char));
 
     fgets(line, maxLineSize+1, f);
-    //printf("%s", line); 
+   // printf("%s", line); 
 
     return line;
 }
@@ -28,15 +28,16 @@ Music* createMusicObject(){
 }
 
 /* create a Music pointer from a string with all data separated by commas */
-Music* fillMusicData(char *line){
+Music* CreateMusicFromData(char *line){
+    
+    char *lineCopy = strdup(line);
     Music *music = createMusicObject();
     char *separator = ",";
     char *extracted;
     int compteur = 0;
-    extracted = strsep(&line, separator); //attention, utilise un malloc -> il faut free().
+    extracted = strsep(&lineCopy, separator); //attention, utilise un malloc -> il faut free().
+
     while (extracted != NULL) {
-        // printf("extracted: '%s'\n", extracted);
-        // printf("left: '%s'\n", line);
         switch(compteur) {
             case 0: music->name = extracted; break;
             case 1: music->artist = extracted; break;
@@ -47,9 +48,11 @@ Music* fillMusicData(char *line){
             case 6: music->year = atoi(extracted); break;
             default: break;
         }
-        extracted = strsep(&line, separator);
+        extracted = strsep(&lineCopy, separator);
         compteur += 1;
     }
+
+    free(lineCopy);
     return music;
 }
 
@@ -60,13 +63,17 @@ int main(void){
     f = fopen(fileName,"r"); 
 
     //we get rid of the first line. The order of the data in the .csv is hard-coded in the createMusic() function.
-    scanLine(f);
+    char *line = scanLine(f);
 
-    //for each line, we create a new Music object
-    Music *music;
-    char* line = scanLine(f);
-    music = fillMusicData(line);
-    printMusic(music);
+    Liste musicList = NULL;
+    //for each line, we create a new Music object and put it in the list.
+    while( !feof(f) ) {
+        line = scanLine(f);
+        Music *music = CreateMusicFromData(line);
+        musicList = ajoutFin_r(music, musicList);
+    }
+
+    //afficheListe_i(musicList);
 
     fclose(f);
 	return EXIT_SUCCESS;

@@ -33,14 +33,14 @@ typedef Cellule* Liste;
 // retourne vrai si l est vide et faux sinon
 bool estVide(Liste l);
 
-// créer une liste d'un seul élément contenant la valeur v
+// créer une liste d'un seul élément contenant la musique passée en paramètre.
 Liste creer(Music *music);
 
 // ajoute l'élément v en tete de la liste l
 Liste ajoutTete(Music *music, Liste l);
 
 //afficher une musique.
-void printMusic(Music *music);
+void afficheMusic(Music *music);
 
 // affiche tous les éléments de la liste l
 // Attention, cette fonction doit être indépendante du type des éléments de la liste
