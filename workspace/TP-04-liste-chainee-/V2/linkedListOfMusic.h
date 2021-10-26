@@ -19,7 +19,7 @@ struct music_s {
 typedef struct music_s Music;
 
 struct cellule_s {
-	Music val;
+	Music *music;
 	struct cellule_s* suiv;
 };
 
@@ -37,10 +37,10 @@ bool estVide(Liste l);
 Liste creer(Music *music);
 
 // ajoute l'élément v en tete de la liste l
-Liste ajoutTete(Music v, Liste l);
+Liste ajoutTete(Music *music, Liste l);
 
 //afficher une musique.
-void afficheMusic(Music e);
+void printMusic(Music *music);
 
 // affiche tous les éléments de la liste l
 // Attention, cette fonction doit être indépendante du type des éléments de la liste
@@ -53,7 +53,7 @@ void afficheListe_i(Liste l);
 void afficheListe_r(Liste l);
 
 //détruire une musique.
-void detruireMusic(Music e);
+void detruireMusic(Music *music);
 
 // Détruit tous les éléments de la liste l
 // version itérative
@@ -64,27 +64,27 @@ void detruire_r(Liste l);
 
 // retourne la liste dans laquelle l'élément v a été ajouté en fin
 // version itérative
-Liste ajoutFin_i(Music v, Liste l);
+Liste ajoutFin_i(Music *music, Liste l);
 
 // version recursive
-Liste ajoutFin_r(Music v, Liste l);
+Liste ajoutFin_r(Music *music, Liste l);
 
 //compare deux musiques.
-bool equalsMusic(Music e1, Music e2);
+bool equalsMusic(Music *music1, Music *music2);
 
 // Retourne un pointeur sur l'élément de la liste l contenant la valeur v ou NULL
 // version itérative
-Liste cherche_i(Music v,Liste l);
+Liste cherche_i(Music *music,Liste l);
 
 // version récursive
-Liste cherche_r(Music v,Liste l);
+Liste cherche_r(Music *music,Liste l);
 
 // Retourne la liste modifiée dans la laquelle le premier élément ayant la valeur v a été supprimé
 // ne fait rien si aucun élément possède cette valeur
 // version itérative
-Liste retirePremier_i(Music v, Liste l);
+Liste retirePremier_i(Music *music, Liste l);
 
 // version recursive
-Liste retirePremier_r(Music v, Liste l);
+Liste retirePremier_r(Music *music, Liste l);
 
 void afficheEnvers_r(Liste l);

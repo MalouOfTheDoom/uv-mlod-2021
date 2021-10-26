@@ -29,7 +29,7 @@ Music* createMusicObject(){
 
 /* create a Music pointer from a string with all data separated by commas */
 Music* fillMusicData(char *line){
-    Music *music = createMusicObject(); //todo créer
+    Music *music = createMusicObject();
     char *separator = ",";
     char *extracted;
     int compteur = 0;
@@ -51,7 +51,6 @@ Music* fillMusicData(char *line){
         compteur += 1;
     }
     return music;
-    
 }
 
 int main(void){
@@ -67,7 +66,7 @@ int main(void){
     Music *music;
     char* line = scanLine(f);
     music = fillMusicData(line);
-    printf("%s \n", music->artist);
+    printMusic(music);
 
     fclose(f);
 	return EXIT_SUCCESS;

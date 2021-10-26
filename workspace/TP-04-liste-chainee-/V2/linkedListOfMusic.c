@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "linkedListOfMusic.h"
+#define TODO NULL;
 
 // retourne vrai si l est vide et faux sinon
 bool estVide(Liste l) {
@@ -12,21 +13,28 @@ bool estVide(Liste l) {
 Liste creer(Music *music){
 	Liste res;
 	res = malloc(sizeof(Cellule));
-	res->val = *music;
+	res->music = music;
 	res->suiv = NULL;
 	return res;
 }
 
 // ajoute l'élément music en tete de la liste l
-Liste ajoutTete(Music music, Liste l) {
+Liste ajoutTete(Music *music, Liste l) {
 	Liste res = creer(music);
 	res->suiv = l;
 	return res;
 }
 
 //affiche une musique.
-void afficheMusic(Music e) {
-	printf("%s ",(char*)e);
+void printMusic(Music *music) {
+    printf("%s, %s, %s, %s, %u, %u, %u",
+    music->name,
+    music->artist,
+    music->album,
+    music->genre,
+    music->diskNumber,
+    music->trackNumber,
+    music->year);
 }
 
 // affiche tous les éléments de la liste l
@@ -38,7 +46,7 @@ void afficheListe_i(Liste l) {
 	Liste p = l;
 
 	while(!estVide(p)) {
-		afficheMusic(p->val);
+		afficheMusic(p->music);
 		p=p->suiv;
 	}
 	printf("\n");
@@ -47,7 +55,7 @@ void afficheListe_i(Liste l) {
 // version recursive
 void afficheListe_r(Liste l) {
 	if( !estVide(l) ) {
-		afficheMusic(l->val);
+		afficheMusic(l->music);
 		afficheListe_r(l->suiv);
 	}
 	else
@@ -55,7 +63,9 @@ void afficheListe_r(Liste l) {
 }
 
 // Détruire une musique.
-void detruireMusic(Music e) {}
+void detruireMusic(Music *music) {
+	return TODO;
+}
 
 // Détruit tous les éléments de la liste l
 // version itérative
@@ -64,7 +74,7 @@ void detruire_i(Liste l) {
 
 	while(!estVide(courant)) {
 		suivant=courant->suiv;
-		detruireMusic(courant->val);
+		detruireMusic(courant->music);
 		free(courant);
 		courant = suivant;
 	}
@@ -74,14 +84,14 @@ void detruire_i(Liste l) {
 void detruire_r(Liste l) {
 	if( !estVide(l) ){
 		detruire_r(l->suiv);
-		detruireMusic(l->val);
+		detruireMusic(l->music);
 		free(l);
 	}
 }
 
 // retourne la liste dans laquelle l'élément music a été ajouté en fin
 // version itérative
-Liste ajoutFin_i(Music music, Liste l) {
+Liste ajoutFin_i(Music *music, Liste l) {
 	Liste elem = creer(music);
 	Liste p = l;
 
@@ -96,7 +106,7 @@ Liste ajoutFin_i(Music music, Liste l) {
 }
 
 // version recursive
-Liste ajoutFin_r(Music music, Liste l) {
+Liste ajoutFin_r(Music *music, Liste l) {
 	if(estVide(l))
 		return creer(music);
 	else
@@ -105,24 +115,25 @@ Liste ajoutFin_r(Music music, Liste l) {
 }
  
 // compare deux Musics
-bool equalsMusic(Music e1, Music e2){
-	return strcmp((char *)e1,(char *)e2)==0;
+bool equalsMusic(Music *music1, Music *music2){
+	return TODO;
+	//return strcmp((char *)e1,(char *)e2)==0;
 }
 
 // Retourne un pointeur sur l'élément de la liste l contenant la valeur music ou NULL
 // version itérative
-Liste cherche_i(Music music,Liste l) {
+Liste cherche_i(Music *music,Liste l) {
 	Liste p = l;
 
-	while(!estVide(p) && !equalsMusic(p->val,music))
+	while(!estVide(p) && !equalsMusic(p->music, music))
 		p=p->suiv;
 
 	return p;
 }
 
 // version récursive
-Liste cherche_r(Music music,Liste l) {
-	if(estVide(l) || equalsMusic(l->val,music))
+Liste cherche_r(Music *music, Liste l) {
+	if(estVide(l) || equalsMusic(l->music,music))
 		return l;
 	else
 		return cherche_r(music,l->suiv);
@@ -131,13 +142,13 @@ Liste cherche_r(Music music,Liste l) {
 // Retourne la liste modifiée dans la laquelle le premier élément ayant la valeur music a été supprimé
 // ne fait rien si aucun élément possède cette valeur
 // version itérative
-Liste retirePremier_i(Music music, Liste l) {
+Liste retirePremier_i(Music *music, Liste l) {
 	Liste precedent, p;
 
 	if(estVide(l))
 		return l;
 
-	if(equalsMusic(l->val,music)) {
+	if(equalsMusic(l->music,music)) {
 		p = l->suiv;
 		l->suiv = NULL;
 		detruire_r(l);
@@ -146,7 +157,7 @@ Liste retirePremier_i(Music music, Liste l) {
 
 	precedent = l;
 	p = l->suiv;
-	while(!estVide(p) && !equalsMusic(p->val,music)) {
+	while(!estVide(p) && !equalsMusic(p->music,music)) {
 		precedent = p;
 		p = p->suiv;
 	}
@@ -163,11 +174,11 @@ Liste retirePremier_i(Music music, Liste l) {
 
 
 // version recursive
-Liste retirePremier_r(Music music, Liste l) {
+Liste retirePremier_r(Music *music, Liste l) {
 	if(estVide(l))
 		return l;
 
-	if(equalsMusic(l->val,music)) {
+	if(equalsMusic(l->music,music)) {
 		Liste p = l->suiv;
 		l->suiv = NULL;
 		detruire_r(l);
@@ -184,7 +195,7 @@ void afficheEnvers_r(Liste l) {
 	if(!estVide(l)) {
 		if(!estVide(l->suiv))
 			afficheEnvers_r(l->suiv);
-		afficheMusic(l->val);
+		afficheMusic(l->music);
 		printf(" ");
 	}
 }
