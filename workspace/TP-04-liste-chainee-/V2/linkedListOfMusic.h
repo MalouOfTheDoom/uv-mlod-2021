@@ -34,7 +34,7 @@ typedef Cellule* Liste;
 bool estVide(Liste l);
 
 // créer une liste d'un seul élément contenant la valeur v
-Liste creer(Music v);
+Liste creer(Music *music);
 
 // ajoute l'élément v en tete de la liste l
 Liste ajoutTete(Music v, Liste l);

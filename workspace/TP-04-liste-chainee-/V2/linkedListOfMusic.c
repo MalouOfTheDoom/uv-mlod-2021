@@ -8,18 +8,18 @@ bool estVide(Liste l) {
 	return l == NULL;
 }
 
-// créer une liste d'un seul élément contenant la valeur v
-Liste creer(Music v){
+// créer une liste d'un seul élément contenant la un pointeur vers une musique
+Liste creer(Music *music){
 	Liste res;
 	res = malloc(sizeof(Cellule));
-	res->val = v;
+	res->val = *music;
 	res->suiv = NULL;
 	return res;
 }
 
-// ajoute l'élément v en tete de la liste l
-Liste ajoutTete(Music v, Liste l) {
-	Liste res = creer(v);
+// ajoute l'élément music en tete de la liste l
+Liste ajoutTete(Music music, Liste l) {
+	Liste res = creer(music);
 	res->suiv = l;
 	return res;
 }
@@ -79,10 +79,10 @@ void detruire_r(Liste l) {
 	}
 }
 
-// retourne la liste dans laquelle l'élément v a été ajouté en fin
+// retourne la liste dans laquelle l'élément music a été ajouté en fin
 // version itérative
-Liste ajoutFin_i(Music v, Liste l) {
-	Liste elem = creer(v);
+Liste ajoutFin_i(Music music, Liste l) {
+	Liste elem = creer(music);
 	Liste p = l;
 
 	if(estVide(p))
@@ -96,11 +96,11 @@ Liste ajoutFin_i(Music v, Liste l) {
 }
 
 // version recursive
-Liste ajoutFin_r(Music v, Liste l) {
+Liste ajoutFin_r(Music music, Liste l) {
 	if(estVide(l))
-		return creer(v);
+		return creer(music);
 	else
-		l->suiv=ajoutFin_r(v,l->suiv);
+		l->suiv=ajoutFin_r(music,l->suiv);
 	return l;
 }
  
@@ -109,35 +109,35 @@ bool equalsMusic(Music e1, Music e2){
 	return strcmp((char *)e1,(char *)e2)==0;
 }
 
-// Retourne un pointeur sur l'élément de la liste l contenant la valeur v ou NULL
+// Retourne un pointeur sur l'élément de la liste l contenant la valeur music ou NULL
 // version itérative
-Liste cherche_i(Music v,Liste l) {
+Liste cherche_i(Music music,Liste l) {
 	Liste p = l;
 
-	while(!estVide(p) && !equalsMusic(p->val,v))
+	while(!estVide(p) && !equalsMusic(p->val,music))
 		p=p->suiv;
 
 	return p;
 }
 
 // version récursive
-Liste cherche_r(Music v,Liste l) {
-	if(estVide(l) || equalsMusic(l->val,v))
+Liste cherche_r(Music music,Liste l) {
+	if(estVide(l) || equalsMusic(l->val,music))
 		return l;
 	else
-		return cherche_r(v,l->suiv);
+		return cherche_r(music,l->suiv);
 }
 
-// Retourne la liste modifiée dans la laquelle le premier élément ayant la valeur v a été supprimé
+// Retourne la liste modifiée dans la laquelle le premier élément ayant la valeur music a été supprimé
 // ne fait rien si aucun élément possède cette valeur
 // version itérative
-Liste retirePremier_i(Music v, Liste l) {
+Liste retirePremier_i(Music music, Liste l) {
 	Liste precedent, p;
 
 	if(estVide(l))
 		return l;
 
-	if(equalsMusic(l->val,v)) {
+	if(equalsMusic(l->val,music)) {
 		p = l->suiv;
 		l->suiv = NULL;
 		detruire_r(l);
@@ -146,13 +146,13 @@ Liste retirePremier_i(Music v, Liste l) {
 
 	precedent = l;
 	p = l->suiv;
-	while(!estVide(p) && !equalsMusic(p->val,v)) {
+	while(!estVide(p) && !equalsMusic(p->val,music)) {
 		precedent = p;
 		p = p->suiv;
 	}
 
 	if(!estVide(p)) {
-		// on a trouvé v
+		// on a trouvé music
 		precedent->suiv = p->suiv;
 		p->suiv = NULL;
 		detruire_r(p);
@@ -163,18 +163,18 @@ Liste retirePremier_i(Music v, Liste l) {
 
 
 // version recursive
-Liste retirePremier_r(Music v, Liste l) {
+Liste retirePremier_r(Music music, Liste l) {
 	if(estVide(l))
 		return l;
 
-	if(equalsMusic(l->val,v)) {
+	if(equalsMusic(l->val,music)) {
 		Liste p = l->suiv;
 		l->suiv = NULL;
 		detruire_r(l);
 		return p;
 	}
 
-	l->suiv = retirePremier_r(v,l->suiv);
+	l->suiv = retirePremier_r(music,l->suiv);
 	return l;
 }
 
