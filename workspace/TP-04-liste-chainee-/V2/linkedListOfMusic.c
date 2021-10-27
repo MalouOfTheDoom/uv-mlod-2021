@@ -206,3 +206,31 @@ void afficheEnvers_r(Liste l) {
 	}
 }
 
+Liste trierParAnnee(Liste l){
+	Music *currentMusic = l->music;
+	Liste listeTriee = creer(currentMusic);
+	Liste sauvegarde = listeTriee;
+	l = l->suiv;
+	
+	while(!estVide(l)){
+		currentMusic = l->music;
+		while( !estVide(listeTriee)){
+			if (currentMusic->year >= listeTriee->music->year) {
+				if(!listeTriee->suiv || currentMusic->year <= (listeTriee->suiv)->music->year) {
+					ajoutFin_i(currentMusic, listeTriee);
+					break;
+				}
+				else {
+					listeTriee = listeTriee->suiv;
+				}
+			}
+			else {
+				ajoutTete(currentMusic, listeTriee);
+				break;
+			}
+		}
+		l = l->suiv;
+	}
+	return sauvegarde;
+}
+

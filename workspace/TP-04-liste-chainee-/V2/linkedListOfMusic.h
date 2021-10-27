@@ -88,3 +88,5 @@ Liste retirePremier_i(Music *music, Liste l);
 Liste retirePremier_r(Music *music, Liste l);
 
 void afficheEnvers_r(Liste l);
+
+Liste trierParAnnee(Liste l);
