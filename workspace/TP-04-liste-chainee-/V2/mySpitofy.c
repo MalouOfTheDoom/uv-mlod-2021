@@ -1,6 +1,15 @@
 // gcc -W -Wall linkedListOfMusic.c mySpitofy.c -o mySpitofy
 
-// valgrind --leak-check=yes --leak-check=full --show-leak-kinds=all --show-reachable=no ./linkedListOfString
+// valgrind --leak-check=yes --leak-check=full --show-leak-kinds=all --show-reachable=no ./mySpitofy
+
+// ./mySpitofy > out.csv
+// diff out.csv music.csv
+/* 
+    --> présente des changements. Explication : certaines données dans music.csv ont certains champs vides 
+    (nottament le diskNumber).
+    ce programme associe à ces champs (qui sont obligatoirement des int) la valeur -1.
+    Je n'ai pas réussi (sans changer la structure Music) à prendre en compte des champs int vides.
+*/
 
 #include "linkedListOfMusic.h"
 #include <stdlib.h>
@@ -37,12 +46,20 @@ Music* CreateMusicFromData(char *line){
     extracted = strsep(&lineCopy, separator); //attention, utilise un malloc -> il faut free().
 
     while (extracted != NULL) {
+        
         switch(compteur) {
             case 0: music->name = extracted; break;
             case 1: music->artist = extracted; break;
             case 2: music->album = extracted; break;
             case 3: music->genre = extracted; break;
-            case 4: music->diskNumber = atoi(extracted); break; //we use atoi to convert char* to int.
+            case 4: 
+                if (*extracted == '\0') {
+                    music->diskNumber = -1;
+                }
+                else {
+                    music->diskNumber = atoi(extracted); //we use atoi to convert char* to int.
+                }
+                break; 
             case 5: music->trackNumber = atoi(extracted) ; break;
             case 6: music->year = atoi(extracted); break;
             default: break;
@@ -68,11 +85,12 @@ int main(void){
     //for each line, we create a new Music object and put it in the list.
     while( !feof(f) ) {
         line = scanLine(f);
-        if(line[0] != '\0'){ //on vérifie que notre ligne n'est pas vide.
+        if(line[0] != '\0'){ // test if the line is not empty.
             Music *music = CreateMusicFromData(line);
             musicList = ajoutFin_r(music, musicList);
         }
     }
+    free(line);
 
     afficheListe_i(musicList);
 

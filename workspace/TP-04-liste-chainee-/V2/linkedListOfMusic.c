@@ -27,7 +27,7 @@ Liste ajoutTete(Music *music, Liste l) {
 
 //affiche une musique.
 void afficheMusic(Music *music) {
-    printf("%s, %s, %s, %s, %u, %u, %u \n",
+    printf("%s,%s,%s,%s,%i,%u,%u\n",
     music->name,
     music->artist,
     music->album,
@@ -64,10 +64,6 @@ void afficheListe_r(Liste l) {
 
 // Détruire une musique.
 void detruireMusic(Music *music) {
-	//free(music->name);
-	//free(music->artist);
-	//free(music->album);
-	//free(music->genre);
 	free(music);
 }
 
