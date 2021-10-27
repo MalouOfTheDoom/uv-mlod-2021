@@ -16,7 +16,6 @@ char* scanLine(FILE *f)
 	char *line = calloc(maxLineSize+1,sizeof(char));
 
     fgets(line, maxLineSize+1, f);
-   // printf("%s", line); 
 
     return line;
 }
@@ -69,12 +68,15 @@ int main(void){
     //for each line, we create a new Music object and put it in the list.
     while( !feof(f) ) {
         line = scanLine(f);
-        Music *music = CreateMusicFromData(line);
-        musicList = ajoutFin_r(music, musicList);
+        if(line[0] != '\0'){ //on vérifie que notre ligne n'est pas vide.
+            Music *music = CreateMusicFromData(line);
+            musicList = ajoutFin_r(music, musicList);
+        }
     }
 
-    //afficheListe_i(musicList);
+    afficheListe_i(musicList);
 
+    detruire_r(musicList);
     fclose(f);
 	return EXIT_SUCCESS;
 }

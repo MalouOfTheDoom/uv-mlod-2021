@@ -44,12 +44,12 @@ void afficheMusic(Music *music) {
 // version itérative
 void afficheListe_i(Liste l) {
 	Liste p = l;
-	
+
 	while(!estVide(p)) {
 		afficheMusic(p->music);
 		p=p->suiv;
 	}
-	printf("\n");
+	//printf("\n");
 }
 
 // version recursive
@@ -64,7 +64,11 @@ void afficheListe_r(Liste l) {
 
 // Détruire une musique.
 void detruireMusic(Music *music) {
-	return TODO;
+	//free(music->name);
+	//free(music->artist);
+	//free(music->album);
+	//free(music->genre);
+	free(music);
 }
 
 // Détruit tous les éléments de la liste l
@@ -116,8 +120,14 @@ Liste ajoutFin_r(Music *music, Liste l) {
  
 // compare deux Musics
 bool equalsMusic(Music *music1, Music *music2){
-	return TODO;
-	//return strcmp((char *)e1,(char *)e2)==0;
+	if( strcmp(music1->name, music2->name) != 0) return false;
+	if( strcmp(music1->artist, music2->artist) != 0) return false;
+	if( strcmp(music1->album, music2->album) != 0) return false;
+	if( strcmp(music1->genre, music1->genre) != 0) return false;
+	if (music1->diskNumber != music2->diskNumber) return false;
+	if (music1->trackNumber != music2->trackNumber) return false;
+	if (music1->year != music2->year) return false;
+	return true;
 }
 
 // Retourne un pointeur sur l'élément de la liste l contenant la valeur music ou NULL
