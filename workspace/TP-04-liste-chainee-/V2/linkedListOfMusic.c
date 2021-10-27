@@ -206,6 +206,8 @@ void afficheEnvers_r(Liste l) {
 	}
 }
 
+
+//fonction non commentée, très sale, marche à moitié j'ai l'impression. A reprendre...
 Liste trierParAnnee(Liste l){
 	Music *currentMusic = l->music;
 	Liste listeTriee = creer(currentMusic);
@@ -217,7 +219,9 @@ Liste trierParAnnee(Liste l){
 		while( !estVide(listeTriee)){
 			if (currentMusic->year >= listeTriee->music->year) {
 				if(!listeTriee->suiv || currentMusic->year <= (listeTriee->suiv)->music->year) {
-					ajoutFin_i(currentMusic, listeTriee);
+					Liste sauvegardeSuivant = listeTriee->suiv;
+					listeTriee->suiv = creer(currentMusic);
+					listeTriee->suiv->suiv = sauvegardeSuivant;
 					break;
 				}
 				else {

@@ -92,9 +92,9 @@ int main(void){
     }
     free(line);
 
-    //afficheListe_i(musicList);
-    Liste musicListTriee = trierParAnnee(musicList);
-    afficheListe_i(musicListTriee);
+    afficheListe_i(musicList);
+    // Liste musicListTriee = trierParAnnee(musicList);
+    // afficheListe_i(musicListTriee);
 
     detruire_r(musicList);
     fclose(f);
