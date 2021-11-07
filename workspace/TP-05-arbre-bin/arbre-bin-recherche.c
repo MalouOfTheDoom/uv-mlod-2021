@@ -26,19 +26,30 @@ ArbreBinaire creer(Element e) {
 // si a contient déjà un element e, ce dernier n'est pas insérer afin d'éviter les doublons
 // version itérative
 ArbreBinaire insere_i(ArbreBinaire a, Element e) {
-	ArbreBinaire b = a;
+    if (estVide(a))
+        return creer(e);
 
-	while ( !estVide(b) ) {
-		if ( e == b->val ) {
-			return a;
-		}
-		if ( e < b->val ) {
-			b = b->filsGauche;
-		}
-		if ( e > b->val ) {
-			b = b->filsDroit;
-		}
-	}
+    ArbreBinaire b = a;
+
+    while ( !estVide(b) ){
+        if (e==b->val)
+        	return (a);
+        if (e < b->val) {
+			if (!estVide(b->filsGauche)) 
+				b = b->filsGauche;
+            else {
+                b->filsGauche = creer(e);
+            }
+        }
+        if (e > b->val) {
+			if (!estVide(b->filsDroit)) 
+                b = b->filsDroit;
+            else {
+                b->filsDroit = creer(e);
+            }
+        }
+    }
+    return a; 
 }	
 
 // insere e dans a sachant que a est un arbre binaire de recherche
@@ -78,7 +89,7 @@ int nombreDeNoeud(ArbreBinaire a){
 // retourne la profondeur du noeud ayant la valeur e dans a
 // retourne -1 si a est vide ou si e n'est pas dans a
 int profondeur(ArbreBinaire a, Element e){
-	
+	return 0;
 }
 
 // retourne la hauteur de l'arbre a
@@ -88,8 +99,27 @@ int hauteur(ArbreBinaire a){
 
 // retourne le pere de elem dans l'arbre a ou NULL s'il n'existe pas
 ArbreBinaire pere(ArbreBinaire a, Element elem){
+	if (estVide(a) || a->val == elem)
+        return NULL;
 
-	return NULL;
+    ArbreBinaire b = a;
+
+    while ( !estVide(b) ){
+        if (elem < b->val) {
+			if (!estVide(b->filsGauche)) {
+				if ( b->filsGauche->val == elem) return b;
+			}
+			b = b->filsGauche;
+
+        }
+        else {
+			if (!estVide(b->filsDroit)) {
+				if ( b->filsDroit->val == elem) return b;
+			}
+			b = b->filsDroit;
+        }
+    }
+    return NULL; 
 }
 
 
@@ -146,12 +176,49 @@ ArbreBinaire recherche_r(ArbreBinaire a, Element elem) {
 // suppime x de a
 ArbreBinaire supprimer_r(ArbreBinaire a,Element x)
 {
-	ArbreBinaire b = recherche_r(a, x);
-
-	if ( estVide(b->filsGauche) && estVide(b->filsDroit) )
-		//detruit
-	a;
-
+	ArbreBinaire b = a;
+	if ( !estVide(b) ) {
+		if ( x < b->val ) {
+			b->filsGauche = supprimer_r( b->filsGauche, x);
+			return a;
+		}
+		if ( x > b->val ) {
+			b->filsDroit = supprimer_r( b->filsDroit, x);
+			return a;
+		}
+		
+		//si b->val == x
+		//cas feuille
+		if ( estVide(b->filsGauche) && estVide(b->filsDroit) ) {
+			free(b);
+			return NULL;
+		}
+		//cas un seul descendant gauche
+		if ( estVide(b->filsDroit)) {
+			ArbreBinaire temp = b->filsGauche;
+			free(b);
+			return temp;
+		}
+		//cas un seul descendant droit
+		if ( estVide(b->filsGauche)) {
+			ArbreBinaire temp = b->filsDroit;
+			free(b);
+			return temp;
+		}
+		//cas deux descendants. on remplace par le plus à droite du SAG.
+		ArbreBinaire toMove = b->filsGauche;
+		ArbreBinaire sauvFilsGauche = b->filsGauche;
+		ArbreBinaire sauvFilsDroit = b->filsDroit;
+		free(b);
+		while( !estVide(toMove->filsDroit) ) {
+			toMove = toMove->filsDroit;
+		}
+		ArbreBinaire arbreRes = creer( toMove->val );
+		arbreRes->filsDroit = sauvFilsDroit;
+		arbreRes->filsGauche = supprimer_r(sauvFilsGauche, toMove->val);
+		return arbreRes;
+	}
+	return a;
 }
 
 void detruire_r(ArbreBinaire a){
